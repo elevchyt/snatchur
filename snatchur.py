@@ -2,7 +2,8 @@ import pyautogui
 import time
 import os
 from os import system
-import winsound
+import subprocess
+import pygame
 from colorama import init as colorama_init
 from termcolor import cprint
 
@@ -37,7 +38,15 @@ def get_user_input():
     screenshotsDirectory = input("Enter the name of the screenshots directory: ")
     if screenshotsDirectory == "":
         screenshotsDirectory = str(int(time.time()))
-        print("Screenshots directory name not specified. Using current Unix timestamp.")
+        cprint("Screenshots directory name not specified. Using current Unix timestamp.", "yellow")
+    time.sleep(1)
+
+    # Get the number of screenshots to take
+    numberOfScreenshots = input("How many screenshots do you want to take?: ")
+    if numberOfScreenshots == "":
+        numberOfScreenshots = 1
+    else:
+        numberOfScreenshots = abs(int(numberOfScreenshots))
     time.sleep(1)
     
     # Get if sound is enabled
@@ -48,14 +57,7 @@ def get_user_input():
         isSoundEnabled = False
     else:
         isSoundEnabled = True
-    time.sleep(1)
-    
-    # Get the number of screenshots to take
-    numberOfScreenshots = input("How many screenshots do you want to take?: ")
-    if numberOfScreenshots == "":
-        numberOfScreenshots = 1
-    else:
-        numberOfScreenshots = abs(int(numberOfScreenshots))
+        cprint('(Enabling screenshot sound)', "yellow")
     time.sleep(1)
     
     # Get the screenshot format
@@ -66,7 +68,7 @@ def get_user_input():
         screenshotFormat = '.jpg'
     else:
         screenshotFormat = '.png'
-        print('(Setting .png as screenshot format)')
+        cprint('(Setting .png as screenshot format)', "yellow")
     time.sleep(1)
 
     # Get if a click should happen before taking a screenshot
@@ -77,18 +79,18 @@ def get_user_input():
         isClickEnabled = False
     else:
         isClickEnabled = True
-        print('(Setting click to true)')
+        cprint('(Enabling click)', "yellow")
     time.sleep(1)
 
     # Get screenshot region coordinates
-    screenshot_x = input("Enter the X-coordinate of the top-left corner of the screenshot region: ")
+    screenshot_x = input("Enter the X-coordinate of the top-left corner of the screenshot region (in pixels): ")
     if screenshot_x == "":
         screenshot_x = 378
     else:
         screenshot_x = abs(int(screenshot_x))
     time.sleep(1)
     
-    screenshot_y = input("Enter the Y-coordinate of the top-left corner of the screenshot region: ")
+    screenshot_y = input("Enter the Y-coordinate of the top-left corner of the screenshot region (in pixels): ")
     if screenshot_y == "":
         screenshot_y = 164
     else:
@@ -113,14 +115,14 @@ def get_user_input():
 
     # Get click point coordinates (if isClickEnabled is True)
     if isClickEnabled:
-        click_x = input("Enter the X-coordinate of the top-left corner of the point you want to click: ")
+        click_x = input("Enter the X-coordinate of the top-left corner of the point you want to click (in pixels): ")
         if click_x == "":
             click_x = 1732
         else:
             click_x = abs(int(click_x))
         time.sleep(1)
         
-        click_y = input("Enter the Y-coordinate of the top-left corner of the point you want to click: ")
+        click_y = input("Enter the Y-coordinate of the top-left corner of the point you want to click (in pixels): ")
         if click_y == "":
             click_y = 524
         else:
@@ -147,10 +149,10 @@ def snatch_init():
         time.sleep(delayBeforeScreenshot)
 
         # Capture the screenshot of the specified region (make sure screnshots region exists)
-        print('| Took a screenshot!')
         if not os.path.exists(screenshotsDirectory):
             os.makedirs(screenshotsDirectory)
         screenshot = pyautogui.screenshot(region=(screenshot_x, screenshot_y, width, height))
+        cprint('| Took a screenshot!', 'yellow')
         play_beep()
 
         # Move the mouse to the desired location and click
@@ -167,13 +169,30 @@ def snatch_init():
         filename = screenshotsDirectory + '--' + str(screenshotCounter) + screenshotFormat
         screenshot.save(screenshotsDirectory + '/' + filename)
         screenshotCounter += 1
+    
+    # Finish!
+    play_finish_audio()
+    cprint('Finished snatching!', 'green')
+    time.sleep(2)
+    os.system("pause")
 
-# Play the system beep sound
+# Audio
+def play_audio(file_path):
+    pygame.mixer.init()
+    pygame.mixer.music.load(file_path)
+    pygame.mixer.music.play()
+
+# Play beep sound for screenshot
 def play_beep():
     if isSoundEnabled:
-        winsound.Beep(920, 50)  # Frequency: 440 Hz, Duration: 1000 ms
+        play_audio('beep600.ogg')
+
+# Play the finish sound on successful completion
+def play_finish_audio():
+    play_audio('finish.ogg')
 
 # Begin by getting user input
+subprocess.call('clear' if os.name == 'posix' else 'cls', shell=True)
 cprint('Snatchur', 'green')
 print('---------------------')
 time.sleep(0.5)
