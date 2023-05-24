@@ -1,4 +1,5 @@
 import pyautogui
+import re
 import time
 import os
 from os import system
@@ -6,6 +7,7 @@ import subprocess
 import pygame
 from colorama import init as colorama_init
 from termcolor import cprint
+import img2pdf
 
 colorama_init()
 
@@ -21,6 +23,7 @@ height = 780  # Height of the screenshot region (number of pixels from the top o
 
 isSoundEnabled = True # Determine if sounds should be played (on screenshot)
 isClickEnabled = True # Determine if a click somewhere should happen before taking a screenshot
+isPdfExportEnabled = False # Determine if a PDF should be generated using the screenshots
 
 delayInitial = 5
 delayBeforeClick = 2
@@ -34,7 +37,7 @@ numberOfScreenshots = 1 # The number of screenshots you want to save
 
 def get_user_input():
     # Get name of the screenshots directory
-    global screenshotsDirectory, isClickEnabled, screenshotFormat, screenshot_x, screenshot_y, click_x, click_y, width, height, isSoundEnabled, numberOfScreenshots
+    global screenshotsDirectory, isClickEnabled, screenshotFormat, screenshot_x, screenshot_y, click_x, click_y, width, height, isSoundEnabled, numberOfScreenshots, isPdfExportEnabled
     screenshotsDirectory = input("Enter the name of the screenshots directory: ")
     if screenshotsDirectory == "":
         screenshotsDirectory = str(int(time.time()))
@@ -47,17 +50,6 @@ def get_user_input():
         numberOfScreenshots = 1
     else:
         numberOfScreenshots = abs(int(numberOfScreenshots))
-    time.sleep(1)
-    
-    # Get if sound is enabled
-    isSoundEnabled = input("Do you want to play a sound before taking a screenshot? (y/n): ")
-    if isSoundEnabled == "y" or isSoundEnabled == "Y":
-        isSoundEnabled = True
-    elif isSoundEnabled == "n" or isSoundEnabled == "N":
-        isSoundEnabled = False
-    else:
-        isSoundEnabled = True
-        cprint('(Enabling screenshot sound)', "yellow")
     time.sleep(1)
     
     # Get the screenshot format
@@ -128,6 +120,28 @@ def get_user_input():
         else:
             click_y = abs(int(click_y))
         time.sleep(1)
+    
+    # Get if a PDF should be generated using the screenshots
+    isPdfExportEnabled = input("Do you want to generate a PDF using the screenshots? (y/n): ")
+    if isPdfExportEnabled == "y" or isPdfExportEnabled == "Y":
+        isPdfExportEnabled = True
+    elif isPdfExportEnabled == "n" or isPdfExportEnabled == "N":
+        isPdfExportEnabled = False
+    else:
+        isPdfExportEnabled = False
+        cprint('(Disabling PDF export)', "yellow")
+    time.sleep(1)
+    
+    # Get if sound is enabled
+    isSoundEnabled = input("Do you want to play a sound on screenshot capture? (y/n): ")
+    if isSoundEnabled == "y" or isSoundEnabled == "Y":
+        isSoundEnabled = True
+    elif isSoundEnabled == "n" or isSoundEnabled == "N":
+        isSoundEnabled = False
+    else:
+        isSoundEnabled = True
+        cprint('(Enabling screenshot sound)', "yellow")
+    time.sleep(1)
 
     print('Finished configuration.')
     print('')
@@ -170,9 +184,14 @@ def snatch_init():
         screenshot.save(screenshotsDirectory + '/' + filename)
         screenshotCounter += 1
     
+    if isPdfExportEnabled:
+        images_to_pdf()
+
     # Finish!
     play_finish_audio()
+    print('---------------------')
     cprint('Finished snatching!', 'green')
+    print('---------------------')
     time.sleep(2)
     os.system("pause")
 
@@ -190,6 +209,19 @@ def play_beep():
 # Play the finish sound on successful completion
 def play_finish_audio():
     play_audio('finish.ogg')
+
+# Convert images to PDF
+def images_to_pdf():
+    cprint('Generating PDF...', 'yellow')
+    image_directory = screenshotsDirectory
+    image_files = [os.path.join(image_directory, file) for file in os.listdir(image_directory) if file.endswith((".jpg", ".png", ".jpeg"))]
+    pattern = re.compile(r".*--(\d+)")
+    sorted_files = sorted(image_files, key=lambda x: int(re.search(pattern, x).group(1)))
+    pdf_bytes = img2pdf.convert(sorted_files)
+    output_pdf = screenshotsDirectory + ".pdf"
+
+    with open(output_pdf, "wb") as f:
+        f.write(pdf_bytes)
 
 # Begin by getting user input
 subprocess.call('clear' if os.name == 'posix' else 'cls', shell=True)
