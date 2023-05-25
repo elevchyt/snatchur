@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <img src="https://raw.githubusercontent.com/elevchyt/snatchur/master/logo.gif" alt="Snatchur" width="200">
+  <img src="https://raw.githubusercontent.com/elevchyt/snatchur/master/logo.png" alt="Snatchur" width="200">
   <br>
   Snatchur
   <br>
