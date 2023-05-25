@@ -181,7 +181,7 @@ def snatch_init():
     print('-- MAKE SURE THE PART OF THE SCREEN YOU WANT TO SNATCH IS VISIBLE -- ')
     cprint('MINIMIZE THIS WINDOW!', "yellow")
     time.sleep(5)
-    print('Snatchur has started!')
+    cprint('Snatchur has started!', "green")
     time.sleep(delayInitial)
 
     # Perform action for how many screenshots you want to save
