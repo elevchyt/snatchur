@@ -20,10 +20,12 @@ screenshot_x = 378  # X-coordinate of the top-left corner of the screenshot regi
 screenshot_y = 164  # Y-coordinate of the top-left corner of the screenshot region
 width = 1165  # Width of the screenshot region (number of pixels from the left of the screen to the start of the desired region)
 height = 780  # Height of the screenshot region (number of pixels from the top of the screen to the start of the desired region)
+scrollPixels = 100 # Amount of pixels to scroll before clicking
 
-isSoundEnabled = True # Determine if sounds should be played (on screenshot)
-isClickEnabled = True # Determine if a click somewhere should happen before taking a screenshot
+isClickEnabled = False # Determine if a click somewhere should happen before taking a screenshot
+isScrollEnabled = False # Determine if a mousewheel scroll should happen before taking a screenshot
 isPdfExportEnabled = False # Determine if a PDF should be generated using the screenshots
+isSoundEnabled = True # Determine if sounds should be played (on screenshot)
 
 delayInitial = 5
 delayBeforeClick = 2
@@ -37,7 +39,7 @@ numberOfScreenshots = 1 # The number of screenshots you want to save
 
 def get_user_input():
     # Get name of the screenshots directory
-    global screenshotsDirectory, isClickEnabled, screenshotFormat, screenshot_x, screenshot_y, click_x, click_y, width, height, isSoundEnabled, numberOfScreenshots, isPdfExportEnabled
+    global screenshotsDirectory, isClickEnabled, screenshotFormat, screenshot_x, screenshot_y, click_x, click_y, width, height, isSoundEnabled, numberOfScreenshots, isPdfExportEnabled, isScrollEnabled, scrollPixels
     screenshotsDirectory = input("Enter the name of the screenshots directory: ")
     if screenshotsDirectory == "":
         screenshotsDirectory = str(int(time.time()))
@@ -70,9 +72,49 @@ def get_user_input():
     elif isClickEnabled == "n" or isClickEnabled == "N":
         isClickEnabled = False
     else:
-        isClickEnabled = True
-        cprint('(Enabling click)', "yellow")
+        isClickEnabled = False
+        cprint('(Disabling click)', "yellow")
     time.sleep(1)
+
+    # Get click point coordinates (if isClickEnabled is True)
+    if isClickEnabled:
+        click_x = input("Enter the X-coordinate of the top-left corner of the point you want to click (in pixels): ")
+        if click_x == "":
+            click_x = 1732
+        else:
+            click_x = abs(int(click_x))
+        time.sleep(1)
+        
+        click_y = input("Enter the Y-coordinate of the top-left corner of the point you want to click (in pixels): ")
+        if click_y == "":
+            click_y = 524
+        else:
+            click_y = abs(int(click_y))
+        time.sleep(1)
+
+    # Get if a scroll should happen before clicking or taking a screenshot
+    isScrollEnabled = input("Do you want to scroll before taking a screenshot? (y/n): ")
+    if isScrollEnabled == "y" or isScrollEnabled == "Y":
+        isScrollEnabled = True
+    elif isScrollEnabled == "n" or isScrollEnabled == "N":
+        isScrollEnabled = False
+    else:
+        isScrollEnabled = False
+        cprint('(Disabling scroll)', "yellow")
+    time.sleep(1)
+
+    # Get scroll amount (if isScrollEnabled is True)
+    if isScrollEnabled:
+        if isClickEnabled:
+            scrollPixels = input("Enter the amount of pixels to scroll before clicking: ")
+        else:
+            scrollPixels = input("Enter the amount of pixels to scroll before taking screenshot: ")
+
+        if scrollPixels == "":
+            scrollPixels = 100
+        else:
+            scrollPixels = abs(int(scrollPixels))
+        time.sleep(1)
 
     # Get screenshot region coordinates
     screenshot_x = input("Enter the X-coordinate of the top-left corner of the screenshot region (in pixels): ")
@@ -104,22 +146,6 @@ def get_user_input():
     else:
         height = abs(int(height))
     time.sleep(1)
-
-    # Get click point coordinates (if isClickEnabled is True)
-    if isClickEnabled:
-        click_x = input("Enter the X-coordinate of the top-left corner of the point you want to click (in pixels): ")
-        if click_x == "":
-            click_x = 1732
-        else:
-            click_x = abs(int(click_x))
-        time.sleep(1)
-        
-        click_y = input("Enter the Y-coordinate of the top-left corner of the point you want to click (in pixels): ")
-        if click_y == "":
-            click_y = 524
-        else:
-            click_y = abs(int(click_y))
-        time.sleep(1)
     
     # Get if a PDF should be generated using the screenshots
     isPdfExportEnabled = input("Do you want to generate a PDF using the screenshots? (y/n): ")
@@ -153,8 +179,9 @@ def snatch_init():
     global screenshotCounter
     # Wait for a brief moment
     print('-- MAKE SURE THE PART OF THE SCREEN YOU WANT TO SNATCH IS VISIBLE -- ')
-    time.sleep(3)
-    print('Preparing to snatch...')
+    cprint('MINIMIZE THIS WINDOW!', "yellow")
+    time.sleep(5)
+    print('Snatchur has started!')
     time.sleep(delayInitial)
 
     # Perform action for how many screenshots you want to save
@@ -169,9 +196,16 @@ def snatch_init():
         cprint('| Took a screenshot!', 'yellow')
         play_beep()
 
-        # Move the mouse to the desired location and click
+        # Scroll before clicking (if isScrollEnabled is True)
+        if isScrollEnabled:
+            time.sleep(0.2)
+            print('- Scroll...')
+            pyautogui.scroll(-scrollPixels) # Use minus prefix to scroll down
+            time.sleep(1.2)
+
+        # Move the mouse to the desired location and click (if isClickEnabled is True)
         if isClickEnabled:
-            print('Click...')
+            print('- Click...')
             time.sleep(delayBeforeClick)
             pyautogui.moveTo(click_x, click_y)
             pyautogui.click()
