@@ -6,7 +6,7 @@
   <br>
 </h1>
 
-<h4 align="center">A tool to automatically capture multiple screenshots of a screen region, with the ability to click and/or scroll after every screenshot!</h4>
+<h4 align="center">A tool that automatically captures multiple screenshots of a screen region, with the ability to click and/or scroll after every screenshot!</h4>
 
 <p align="center">
   <a href="#key-features">Key Features</a> •
@@ -14,7 +14,7 @@
   <a href="#license">License</a>
 </p>
 
-![screenshot](https://raw.githubusercontent.com/amitmerchant1990/electron-markdownify/master/app/img/markdownify.gif)
+![screenshot](https://raw.githubusercontent.com/elevchyt/snatchur/master/demo.gif)
 
 ## Key Features
 
@@ -43,4 +43,4 @@ MIT
 ---
 
 > LinkedIn [@elevchyt](https://www.linkedin.com/in/elevchyt/) &nbsp;&middot;&nbsp;
-> E-Mail [](lehy64@gmail.com)
+> E-Mail [lehy64@gmail.com]
