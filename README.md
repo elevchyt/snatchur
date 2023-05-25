@@ -1,2 +1,46 @@
-# snatchur
- 
+<h1 align="center">
+  <br>
+  <img src="https://i.imgur.com/mWTAa3B.png" alt="Snatchur" width="200">
+  <br>
+  Snatchur
+  <br>
+</h1>
+
+<h4 align="center">A tool to automatically capture multiple screenshots of a screen region, with the ability to click and/or scroll after every screenshot!</h4>
+
+<p align="center">
+  <a href="#key-features">Key Features</a> •
+  <a href="#download">Download</a> •
+  <a href="#license">License</a>
+</p>
+
+![screenshot](https://raw.githubusercontent.com/amitmerchant1990/electron-markdownify/master/app/img/markdownify.gif)
+
+## Key Features
+
+- Capture screenshots of a screen region
+- Emulate mouse events like click or scroll after every screenshot
+  - Eliminates any difficulties when working with paginated content such as e-books or documents
+- Screenshot format
+  - Screenshots can be captured in .png or .jpg format
+- PDF generation
+  - You can generate a PDF after capturing all screenshots
+
+## Download
+
+You can download the latest (.exe) version of Snatchur via the following links.
+
+\*<a>Download (via SourceForge)</a>
+
+## Support
+
+<a href="https://www.buymeacoffee.com/MYLINK" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/purple_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
+
+## License
+
+MIT
+
+---
+
+> LinkedIn [@elevchyt](https://www.linkedin.com/in/elevchyt/) &nbsp;&middot;&nbsp;
+> E-Mail [](lehy64@gmail.com)
