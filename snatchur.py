@@ -11,7 +11,7 @@ import img2pdf
 
 colorama_init()
 
-system("title " + 'Snatchur by elevchyt')
+system("title " + 'snatchur (by elevchyt)')
 
 # Set the coordinates for the region you want to click and capture
 click_x = 1732  # X-coordinate of the point you want to click
@@ -226,6 +226,8 @@ def snatch_init():
     print('---------------------')
     cprint('Finished snatching!', 'green')
     print('---------------------')
+    print('---------------------')
+    cprint('Consider donating a tiny amount @ https://www.buymeacoffee.com/lehy', 'yellow')
     time.sleep(2)
     os.system("pause")
 
