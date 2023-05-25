@@ -30,8 +30,8 @@
 
 You can download the latest (.exe) version of Snatchur via the following links.
 
-- <a target=”_blank” href="https://www.dropbox.com/s/ecmgho4s53n7tg9/snatchur.exe?dl=0">Download (via Dropbox)</a>
-- <a target=”_blank” href="https://drive.google.com/file/d/1chNPAQzq80ojxEkGy-f_ruHigx527OiV/view?usp=sharing">Download (via Google Drive)</a>
+- <a href="https://www.dropbox.com/s/ecmgho4s53n7tg9/snatchur.exe?dl=0">Download (via Dropbox)</a>
+- <a href="https://drive.google.com/file/d/1chNPAQzq80ojxEkGy-f_ruHigx527OiV/view?usp=sharing">Download (via Google Drive)</a>
 
 ## Support
 
