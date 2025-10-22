@@ -44,4 +44,3 @@ MIT
 ---
 
 > LinkedIn [@elevchyt](https://www.linkedin.com/in/elevchyt/) &nbsp;&middot;&nbsp;
-> E-Mail [lehy64@gmail.com]
